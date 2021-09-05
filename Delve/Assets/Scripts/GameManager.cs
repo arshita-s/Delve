@@ -13,7 +13,10 @@ public class GameManager : MonoBehaviour
     private PlayerController player;
     private Health healthBar;
     public DialogueManager dialogueManager;
-    
+    public GameObject blackScreen;
+    public GameObject calBarrier;
+    private bool liftBarrier = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +33,49 @@ public class GameManager : MonoBehaviour
         }
         
         healthBar.updateHearts(player);
+
+        if (liftBarrier)
+        {
+            Destroy(calBarrier);
+        }
     }
 
     public void Dialogue(TextAsset file)
     {
         player.Freeze();
-        dialogueManager.loadInkFile(file);
-        dialogueManager.startDialogue();
+        dialogueManager.LoadInkFile(file);
+        dialogueManager.StartDialogue();
+    }
+
+    public IEnumerator fadeOut(bool fadeToBlack = true, int speed = 5)
+    {
+        Color obj = blackScreen.GetComponent<Image>().color;
+        float fadeAmt;
+
+        if (fadeToBlack)
+        {
+            while (blackScreen.GetComponent<Image>().color.a < 1)
+            {
+                fadeAmt = obj.a + (speed * Time.deltaTime);
+                obj = new Color(obj.r, obj.g, obj.b, fadeAmt);
+                blackScreen.GetComponent<Image>().color = obj;
+                yield return null;
+            }
+        }
+        else
+        {
+            while (blackScreen.GetComponent<Image>().color.a > 0)
+            {
+                fadeAmt = obj.a - (speed * Time.deltaTime);
+                obj = new Color(obj.r, obj.g, obj.b, fadeAmt);
+                blackScreen.GetComponent<Image>().color = obj;
+                yield return null;
+            }
+        }
+    }
+
+    public void liftCalBarrier()
+    {
+        liftBarrier = true;
     }
 }

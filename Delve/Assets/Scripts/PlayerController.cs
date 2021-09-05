@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
     private bool jumping = false;
     private const float groundRadius = 0.2f;
     private Vector3 velocity = Vector3.zero;
-    private bool right = false;
+    public bool right = true;
     private bool freeze = false;
+    private bool interact = false;
+    private FileHolder i;
 
     // Player information fields
     private float coinsCollected = 0f;
@@ -46,6 +48,13 @@ public class PlayerController : MonoBehaviour
         {
             horizontal = 0;
             jumping = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z) && interact)
+        {
+            GameManager gm = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
+            gm.Dialogue(i.getFile());
+            interact = false;
         }
         
     }
@@ -108,6 +117,28 @@ public class PlayerController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+    public void FlipRight()
+    {
+        right = true;
+        Vector3 theScale = transform.localScale;
+        if (theScale.x > 0)
+        {
+            theScale.x *= -1;
+        }
+        transform.localScale = theScale;
+    }
+
+    public void FlipLeft()
+    {
+        right = false;
+        Vector3 theScale = transform.localScale;
+        if (theScale.x < 0)
+        {
+            theScale.x *= -1;
+        }
+        transform.localScale = theScale;
+    }
     
     public void addCoin()
     {
@@ -127,6 +158,13 @@ public class PlayerController : MonoBehaviour
             GameManager gm = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
             gm.Dialogue(other.gameObject.GetComponent<FileHolder>().getFile());
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Interactable"))
+        {
+            i = other.gameObject.GetComponent<FileHolder>();
+            interact = true;
+            Destroy(other.gameObject.GetComponent<FileHolder>());
         }
     }
 

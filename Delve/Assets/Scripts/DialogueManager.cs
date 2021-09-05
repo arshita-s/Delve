@@ -16,6 +16,10 @@ public class DialogueManager : MonoBehaviour
     public bool dialogueFinished = false;
     public bool ready = false;
     public TMP_Text X;
+    public bool triggerFadeOut = false;
+    public bool triggerFadeIn = false;
+    public TextAsset intro;
+    private GameManager gm;
     
     
     // Start is called before the first frame update
@@ -26,6 +30,7 @@ public class DialogueManager : MonoBehaviour
         textBox.enabled = false;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         X.enabled = false;
+        gm = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -51,6 +56,11 @@ public class DialogueManager : MonoBehaviour
                 FinishDialogue();
             }
         }
+
+        if (inkFile == intro)
+        {
+            gm.liftCalBarrier(); 
+        }
     }
 
     void AdvanceDialogue()
@@ -71,6 +81,13 @@ public class DialogueManager : MonoBehaviour
         player.Unfreeze();
         X.enabled = false;
         textBox.enabled = false;
+        ChangeColor("white");
+        
+        if (triggerFadeOut)
+        {
+            StartCoroutine(gm.fadeOut(false));
+            triggerFadeOut = false;
+        }
     }
 
     IEnumerator TypeSentence(string s)
@@ -119,21 +136,67 @@ public class DialogueManager : MonoBehaviour
                     {
                         player.Flip();
                     }
+                    else if (param == "flipr")
+                    {
+                        player.FlipRight();
+                    }
+                    else if (param == "flipl")
+                    {
+                        player.FlipLeft();
+                    }
+                    break;
+                case "color":
+                    ChangeColor(param);
+                    break;
+                case "fade":
+                    if (param == "out")
+                    {
+                        triggerFadeOut = true;
+                    }
+                    else if (param == "in")
+                    {
+                        triggerFadeIn = true;
+                    }
                     break;
             }
         }
     }
 
-    public void loadInkFile(TextAsset file)
+    public void LoadInkFile(TextAsset file)
     {
         inkFile = file;
     }
 
-    public void startDialogue()
+    public void StartDialogue()
     {
         Debug.Log("start dialogue");
         ready = true;
         name.enabled = true;
         message.enabled = true;
+    }
+
+    void ChangeColor(string color)
+    {
+        switch(color)
+        {
+            case "red":
+                message.color = Color.red;
+                break;
+            case "blue":
+                message.color = Color.cyan;
+                break;
+            case "green":
+                message.color = Color.green;
+                break;
+            case "white":
+                message.color = Color.white;
+                break;
+            case "yellow":
+                message.color = Color.yellow;
+                break;
+            default:
+                Debug.Log($"{color} is not available as a text color");
+                break;
+        }
     }
 }
