@@ -60,6 +60,8 @@ public class DialogueManager : MonoBehaviour
 
     void AdvanceDialogue()
     {
+        ChangeColor("white");
+        message.fontStyle = FontStyles.Normal;
         X.enabled = false;
         string sentence = story.Continue();
         ParseTags();
@@ -76,7 +78,6 @@ public class DialogueManager : MonoBehaviour
         player.Unfreeze();
         X.enabled = false;
         textBox.enabled = false;
-        ChangeColor("white");
     }
 
     IEnumerator TypeSentence(string s)
@@ -146,6 +147,9 @@ public class DialogueManager : MonoBehaviour
                     {
                         triggerFadeIn = true;
                     }
+                    break;
+                case "bold":
+                    message.fontStyle = FontStyles.Bold;
                     break;
             }
         }

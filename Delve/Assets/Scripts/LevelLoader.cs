@@ -30,4 +30,14 @@ public class LevelLoader : MonoBehaviour
     {
         StartCoroutine(Load(1));
     }
+
+    public void LoadMain()
+    {
+        StartCoroutine(Load(0));
+    }
+
+    public void LoadControls()
+    {
+        StartCoroutine(Load(3));
+    }
 }

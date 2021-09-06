@@ -166,6 +166,12 @@ public class PlayerController : MonoBehaviour
             interact = true;
             Destroy(other.gameObject.GetComponent<FileHolder>());
         }
+
+        if (other.gameObject.CompareTag("Demo"))
+        {
+            GameManager gm = GameObject.FindGameObjectWithTag("Game Manager").GetComponent<GameManager>();
+            gm.DemoFinished();
+        }
     }
 
     public void Freeze()

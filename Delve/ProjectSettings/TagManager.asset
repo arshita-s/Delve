@@ -9,6 +9,7 @@ TagManager:
   - X
   - Interactable
   - Level
+  - Demo
   layers:
   - Default
   - TransparentFX

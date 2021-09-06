@@ -26,4 +26,14 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void BackToMain()
+    {
+        levelLoader.LoadMain();
+    }
+
+    public void ToControls()
+    {
+        levelLoader.LoadControls();
+    }
 }
