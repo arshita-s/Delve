@@ -18,7 +18,6 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text X;
     public bool triggerFadeOut = false;
     public bool triggerFadeIn = false;
-    public TextAsset intro;
     private GameManager gm;
     
     
@@ -56,11 +55,7 @@ public class DialogueManager : MonoBehaviour
                 FinishDialogue();
             }
         }
-
-        if (inkFile == intro)
-        {
-            gm.liftCalBarrier(); 
-        }
+        
     }
 
     void AdvanceDialogue()
@@ -82,12 +77,6 @@ public class DialogueManager : MonoBehaviour
         X.enabled = false;
         textBox.enabled = false;
         ChangeColor("white");
-        
-        if (triggerFadeOut)
-        {
-            StartCoroutine(gm.fadeOut(false));
-            triggerFadeOut = false;
-        }
     }
 
     IEnumerator TypeSentence(string s)

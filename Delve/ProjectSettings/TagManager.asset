@@ -8,6 +8,7 @@ TagManager:
   - Game Manager
   - X
   - Interactable
+  - Level
   layers:
   - Default
   - TransparentFX
