@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
+    public Animator music;
 
     // Update is called once per frame
     void Update()
@@ -22,6 +23,10 @@ public class LevelLoader : MonoBehaviour
     IEnumerator Load(int level)
     {
         transition.SetTrigger("start");
+        if (music != null)
+        {
+            music.SetTrigger("fade");
+        }
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(level);
     }
